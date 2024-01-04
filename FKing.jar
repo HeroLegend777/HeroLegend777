@@ -1,0 +1,64 @@
+
+Below is an example code for the "FKing" plugin in Minecraft, which is similar to the "mking" plugin. This code is compatible with Minecraft version 1.16.5.
+
+```java
+package com.example.fking;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class FKing extends JavaPlugin {
+
+    @Override
+    public void onEnable() {
+        // Plugin startup logic
+        getLogger().info("FKing plugin has been enabled!");
+    }
+
+    @Override
+    public void onDisable() {
+        // Plugin shutdown logic
+        getLogger().info("FKing plugin has been disabled!");
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (command.getName().equalsIgnoreCase("fk")) {
+            if (sender instanceof Player) {
+                Player player = (Player) sender;
+                if (player.isOp()) {
+                    if (args.length == 1) {
+                        Player target = Bukkit.getPlayerExact(args[0]);
+                        if (target != null) {
+                            setKing(player, target);
+                        } else {
+                            player.sendMessage(ChatColor.RED + "Player not found!");
+                        }
+                    } else {
+                        player.sendMessage(ChatColor.RED + "Usage: /fk <player>");
+                    }
+                } else {
+                    player.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
+                }
+            } else {
+                sender.sendMessage("This command can only be executed by a player!");
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private void setKing(Player sender, Player target) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.sendMessage(ChatColor.AQUA + target.getName() + " is now the King of the Server!");
+        }
+        getLogger().info(sender.getName() + " has made " + target.getName() + " the King of the Server!");
+    }
+}
+```
+
+Please note that this is a basic implementation of the "FKing" plugin. You can modify and add more features as per your requirements.
